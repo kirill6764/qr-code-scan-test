@@ -51,6 +51,22 @@
     #noQRFound {
       text-align: center;
     }
+    #buttonPanel{
+    	position: absolute;
+    	top: 20px;
+    	right: 20px;
+    	background: #49eae3;
+	    width: 80px;
+	    height: 80px;
+	    text-align: center;
+	    opacity: .8;
+	    padding-top: 20px;
+    }
+    #changeButton{
+    	text-decoration: none;
+	    color: white;
+	    font-size: 20px;
+    }
   </style>
 </head>
 <body>
@@ -63,7 +79,7 @@
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Link:</b> <span id="outputData"></span></div>
   </div>
-  <div><a href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
+  <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
@@ -83,26 +99,22 @@
       canvas.stroke();
     }
 
-    /*navigator.mediaDevices.enumerateDevices()
-	.then(function(devices) {
-	  devices.forEach(function(device) {
-	    console.log(device.kind + ": " + device.label +
-	                " id = " + device.deviceId);
-	  });
-	})
-	.catch(function(err) {
-	  console.log(err.name + ": " + err.message);
-	});*/
+	// Use facingMode: environment to attemt to get the front camera on phones
+    function InitNavigator(){
+    	navigator.mediaDevices.getUserMedia({ video: { facingMode: mode } }).then(function(stream) {
+	      video.srcObject = stream;
+	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+	      video.play();
+	      outputMessage.hidden = true;
+	      outputData.parentElement.hidden = false;
+	      requestAnimationFrame(tick);
+	    });
+    }
+	InitNavigator();
+    
 
-    // Use facingMode: environment to attemt to get the front camera on phones
-    navigator.mediaDevices.getUserMedia({ video: {facingMode: mode} }).then(function(stream) {
-      video.srcObject = stream;
-      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-      video.play();
-      outputMessage.hidden = true;
-      outputData.parentElement.hidden = false;
-      requestAnimationFrame(tick);
-    });
+    
+    
 
 
     function tick() {
@@ -142,14 +154,7 @@
     		mode = "user";
     	else
     		mode = "environment";
-    	navigator.mediaDevices.getUserMedia({ video: { facingMode: mode } }).then(function(stream) {
-	      video.srcObject = stream;
-	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-	      video.play();
-	      outputMessage.hidden = true;
-	      outputData.parentElement.hidden = false;
-	      requestAnimationFrame(tick);
-	    });
+    	InitNavigator();
     }
   </script>
 </body>

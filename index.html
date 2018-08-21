@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <title>jsQR Demo</title>
- 
+  <script src="adapter.js"></script>
   <script src="jsQR.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
   <style>
@@ -82,8 +82,19 @@
       canvas.stroke();
     }
 
+    /*navigator.mediaDevices.enumerateDevices()
+	.then(function(devices) {
+	  devices.forEach(function(device) {
+	    console.log(device.kind + ": " + device.label +
+	                " id = " + device.deviceId);
+	  });
+	})
+	.catch(function(err) {
+	  console.log(err.name + ": " + err.message);
+	});*/
+
     // Use facingMode: environment to attemt to get the front camera on phones
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+    navigator.mediaDevices.getUserMedia({ video: {facingMode: 'environment'} }).then(function(stream) {
       video.srcObject = stream;
       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       video.play();
@@ -125,8 +136,7 @@
     }
 
     function ChangeCamera(){
-	    alert("test");
-    	video.Stop();
+    	video.srcObject.getTracks().forEach(t => t.stop());
     	navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(function(stream) {
 	      video.srcObject = stream;
 	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen

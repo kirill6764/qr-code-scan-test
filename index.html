@@ -72,6 +72,7 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    var mode = "environment";
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -94,7 +95,7 @@
 	});*/
 
     // Use facingMode: environment to attemt to get the front camera on phones
-    navigator.mediaDevices.getUserMedia({ video: {facingMode: 'environment'} }).then(function(stream) {
+    navigator.mediaDevices.getUserMedia({ video: {facingMode: mode} }).then(function(stream) {
       video.srcObject = stream;
       video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
       video.play();
@@ -137,6 +138,10 @@
 
     function ChangeCamera(){
     	video.srcObject.getTracks().forEach(t => t.stop());
+    	if(mode == "environment")
+    		mode = "user";
+    	else
+    		mode = "environment";
     	navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(function(stream) {
 	      video.srcObject = stream;
 	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen

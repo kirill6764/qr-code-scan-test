@@ -5,69 +5,7 @@
   <script src="adapter.js"></script>
   <script src="jsQR.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Ropa Sans', sans-serif;
-      color: #333;
-      max-width: 900px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    #githubLink {
-      position: absolute;
-      right: 0;
-      top: 12px;
-      color: #2D99FF;
-    }
-
-    h1 {
-      margin: 10px 0;
-      font-size: 40px;
-    }
-
-    #loadingMessage {
-      text-align: center;
-      padding: 40px;
-      background-color: #eee;
-    }
-
-    #canvas {
-      width: 100%;
-    }
-
-    #output {
-      margin-top: 20px;
-      background: #eee;
-      padding: 10px;
-      padding-bottom: 0;
-    }
-
-    #output div {
-      padding-bottom: 10px;
-      word-wrap: break-word;
-    }
-
-    #noQRFound {
-      text-align: center;
-    }
-    #buttonPanel{
-    	position: absolute;
-    	top: 20px;
-    	right: 20px;
-    	background: #49eae3;
-	    width: 150px;
-	    height: 150px;
-	    text-align: center;
-	    opacity: .8;
-	    padding-top: 20px;
-    }
-    #changeButton{
-    	text-decoration: none;
-	    color: white;
-	    font-size: 20px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
   <h1>App for qr-code scan</h1>
@@ -80,6 +18,13 @@
     <div hidden><b>Link:</b> <span id="outputData"></span></div>
   </div>
   <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
+  <div id="popup">
+  	<div id="item">
+  		<input type="text" name="user-name">
+	  	<input type="email" name="user-email">
+	  	<input type="submit" name="btn-send">
+  	</div>
+  </div>
   <script>
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");

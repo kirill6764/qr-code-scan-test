@@ -18,7 +18,7 @@
     <div hidden><b>Link:</b> <span id="outputData"></span></div>
   </div>
   <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
-  <div id="popup">
+  <div id="popup" hidden>
   	<div id="item">
   		<input type="text" name="user-name">
 	  	<input type="email" name="user-email">
@@ -33,6 +33,7 @@
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    var popup = document.getElementById("popup");
     var mode = "environment";
 
     function drawLine(begin, end, color) {
@@ -84,7 +85,8 @@
           //outputMessage.hidden = true;
           //outputData.parentElement.hidden = false;
           outputData.innerText = code.data;
-          window.location.href = code.data;
+          //window.location.href = code.data;
+          popup.hidden = false;
         } else {
           //outputMessage.hidden = false;
           //outputData.parentElement.hidden = true;

@@ -125,6 +125,7 @@
     }
 
     function ChangeCamera(){
+	    alert("test");
     	video.Stop();
     	navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } }).then(function(stream) {
 	      video.srcObject = stream;

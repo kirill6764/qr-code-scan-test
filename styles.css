@@ -62,12 +62,13 @@ h1 {
 #popup{
 	
     width: 800px;
-    height: 350px;
+    height: 500px;
     background: #e2e2e2;
     padding-top: 50px;
     position: absolute;
-    top: 80px;
+    top: 50%;
     left: 50%;
+    margin-top: -250px;
     margin-left: -400px;
 }
 #item{

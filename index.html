@@ -22,7 +22,7 @@
   	<div id="item">
   		<input type="text" name="user-name">
 	  	<input type="email" name="user-email">
-	  	<input type="submit" name="btn-send">
+	  	<input type="submit" name="btn-send" onclick="SendDataAndOpenLink()">
   	</div>
   </div>
   <script>
@@ -102,6 +102,10 @@
     	else
     		mode = "environment";
     	InitNavigator();
+    }
+
+    function SendDataAndOpenLink(){
+    	window.location.href = outputData.innerText;
     }
   </script>
 </body>

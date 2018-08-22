@@ -2,6 +2,7 @@
 <head>
   <meta charset="utf-8">
   <title>jsQR Demo</title>
+  <script src="jquery.min.js"></script>
   <script src="adapter.js"></script>
   <script src="jsQR.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
@@ -20,8 +21,8 @@
   <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
   <div id="popup" hidden>
   	<div id="item">
-  		<input type="text" name="user-name">
-	  	<input type="email" name="user-email">
+  		<input type="text" name="user-name" id="user-name">
+	  	<input type="email" name="user-email" id="user-email">
 	  	<input type="submit" name="btn-send" onclick="SendDataAndOpenLink()">
   	</div>
   </div>
@@ -35,6 +36,8 @@
     var outputData = document.getElementById("outputData");
     var popup = document.getElementById("popup");
     var mode = "environment";
+    var userName = document.getElementById("user-name");
+    var userEmail = document.getElementById("user-email");
 
     function drawLine(begin, end, color) {
       canvas.beginPath();
@@ -47,6 +50,7 @@
 
 	// Use facingMode: environment to attemt to get the front camera on phones
     function InitNavigator(){
+    	popup.hidden = false;
     	navigator.mediaDevices.getUserMedia({ video: { facingMode: mode } }).then(function(stream) {
 	      video.srcObject = stream;
 	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
@@ -105,7 +109,17 @@
     }
 
     function SendDataAndOpenLink(){
-    	window.location.href = outputData.innerText;
+    	console.log(userName.value  + " " + userEmail.value );
+    	$.ajax({  
+            type:'post',//тип запроса: get,post либо head
+        	url:"http://goodnia.com/qr-code-scan/",//url адрес файла обработчика
+       		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
+        	//response:'text',//тип возвращаемого ответа text либо xml
+        	success:function (data) {//возвращаемый результат от сервера
+            	console.log(data);
+        	}
+        }); 
+        //window.location.href = outputData.innerText; 
     }
   </script>
 </body>

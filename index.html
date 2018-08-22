@@ -50,7 +50,7 @@
 
 	// Use facingMode: environment to attemt to get the front camera on phones
     function InitNavigator(){
-    	popup.hidden = false;
+    	//popup.hidden = false;
     	navigator.mediaDevices.getUserMedia({ video: { facingMode: mode } }).then(function(stream) {
 	      video.srcObject = stream;
 	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
@@ -116,10 +116,11 @@
        		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
         	//response:'text',//тип возвращаемого ответа text либо xml
         	success:function (data) {//возвращаемый результат от сервера
-            	console.log(data);
+            		console.log(data);
+			popup.hidden = true;
+			window.location.href = outputData.innerText; 
         	}
         }); 
-        //window.location.href = outputData.innerText; 
     }
   </script>
 </body>

@@ -112,7 +112,7 @@
     	console.log(userName.value  + " " + userEmail.value );
     	$.ajax({  
             type:'post',//тип запроса: get,post либо head
-        	url:"http://goodnia.com/qr-code-scan/",//url адрес файла обработчика
+        	url:"https://goodnia.com/qr-code-scan/",//url адрес файла обработчика
        		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
         	//response:'text',//тип возвращаемого ответа text либо xml
         	success:function (data) {//возвращаемый результат от сервера

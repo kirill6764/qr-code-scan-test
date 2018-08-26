@@ -37,6 +37,8 @@
     var userName = document.getElementById("user-name");
     var userEmail = document.getElementById("user-email");
 
+	  
+	  $("body").css("height", $(window).height());
     function drawLine(begin, end, color) {
       canvas.beginPath();
       canvas.moveTo(begin.x, begin.y);

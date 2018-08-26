@@ -1,9 +1,125 @@
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Damac</title>
-    <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-  <head>
-  <body></body>
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Damac</title>
+  <script src="jquery.min.js"></script>
+  <script src="adapter.js"></script>
+  <script src="jsQR.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <p></p>
+  <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+  <canvas id="canvas" hidden></canvas>
+  <div id="output" hidden>
+    <div id="outputMessage">No QR code detected.</div>
+    <div hidden><b>Link:</b> <span id="outputData"></span></div>
+  </div>
+  <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
+  <div id="popup" hidden>
+  	<div id="item">
+  		<input type="text" name="user-name" id="user-name">
+	  	<input type="email" name="user-email" id="user-email">
+	  	<input type="submit" name="btn-send" onclick="SendDataAndOpenLink()">
+  	</div>
+  </div>
+  <script>
+    var video = document.createElement("video");
+    var canvasElement = document.getElementById("canvas");
+    var canvas = canvasElement.getContext("2d");
+    var loadingMessage = document.getElementById("loadingMessage");
+    var outputContainer = document.getElementById("output");
+    var outputMessage = document.getElementById("outputMessage");
+    var outputData = document.getElementById("outputData");
+    var popup = document.getElementById("popup");
+    var mode = "environment";
+    var userName = document.getElementById("user-name");
+    var userEmail = document.getElementById("user-email");
+
+    function drawLine(begin, end, color) {
+      canvas.beginPath();
+      canvas.moveTo(begin.x, begin.y);
+      canvas.lineTo(end.x, end.y);
+      canvas.lineWidth = 4;
+      canvas.strokeStyle = color;
+      canvas.stroke();
+    }
+
+	// Use facingMode: environment to attemt to get the front camera on phones
+    function InitNavigator(){
+    	//popup.hidden = false;
+    	navigator.mediaDevices.getUserMedia({ video: { facingMode: mode } }).then(function(stream) {
+	      video.srcObject = stream;
+	      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+	      video.play();
+	      outputMessage.hidden = true;
+	      outputData.parentElement.hidden = false;
+	      requestAnimationFrame(tick);
+	    });
+    }
+	//InitNavigator();
+    
+
+    
+    
+
+
+    function tick() {
+      loadingMessage.innerText = "⌛ Loading video..."
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        loadingMessage.hidden = true;
+        canvasElement.hidden = false;
+        outputContainer.hidden = false;
+
+        canvasElement.height = video.videoHeight;
+        canvasElement.width = video.videoWidth;
+        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        var code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "dontInvert",
+        });
+        if (code) {
+          drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
+          drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
+          drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
+          drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
+          //outputMessage.hidden = true;
+          //outputData.parentElement.hidden = false;
+          outputData.innerText = code.data;
+          //window.location.href = code.data;
+          popup.hidden = false;
+        } else {
+          //outputMessage.hidden = false;
+          //outputData.parentElement.hidden = true;
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function ChangeCamera(){
+    	video.srcObject.getTracks().forEach(t => t.stop());
+    	if(mode == "environment")
+    		mode = "user";
+    	else
+    		mode = "environment";
+    	InitNavigator();
+    }
+
+    function SendDataAndOpenLink(){
+    	console.log(userName.value  + " " + userEmail.value );
+    	$.ajax({  
+            type:'post',//тип запроса: get,post либо head
+        	url:"https://goodnia.com/qr-code-scan/",//url адрес файла обработчика
+       		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
+        	//response:'text',//тип возвращаемого ответа text либо xml
+        	success:function (data) {//возвращаемый результат от сервера
+            		console.log(data);
+			popup.hidden = true;
+			window.location.href = outputData.innerText; 
+        	}
+        }); 
+    }
+  </script>
+</body>
 </html>

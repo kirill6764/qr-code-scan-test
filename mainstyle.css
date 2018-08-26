@@ -1,1 +1,7 @@
-
+body {
+    margin: 0px;
+    background: url(welcome_page.fw.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 2440px;
+}

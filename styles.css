@@ -26,6 +26,11 @@ h1 {
   background-color: #eee;
 }
 
+#canvas-container{
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 8em;
+}
 #canvas {
   width: 100%;
 }
@@ -87,9 +92,9 @@ h1 {
 	font-size: 34px;
 }
 #startscancode{
-	padding: 85px 400px;
-	background: #e2e2e2;
-	position: absolute;
-	bottom: 290px;
-	left: 155px;
+	padding: 3em 18em;
+  background: #e2e2e2;
+  position: absolute;
+  bottom: 14em;
+  left: 7em;
 }

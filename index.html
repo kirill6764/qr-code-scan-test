@@ -38,7 +38,7 @@
     var userEmail = document.getElementById("user-email");
 
 	  
-	  $("body").css("height", $(window).height());
+    $("body").css("height", $(window).width() * 1.77777778);
     function drawLine(begin, end, color) {
       canvas.beginPath();
       canvas.moveTo(begin.x, begin.y);
@@ -68,7 +68,7 @@
 
 
     function tick() {
-      loadingMessage.innerText = "⌛ Loading video..."
+      //loadingMessage.innerText = "⌛ Loading video..."
       if (video.readyState === video.HAVE_ENOUGH_DATA) {
         loadingMessage.hidden = true;
         canvasElement.hidden = false;

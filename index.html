@@ -24,7 +24,7 @@
   	<div id="item">
   		<input type="text" name="user-name" id="user-name">
 	  	<input type="email" name="user-email" id="user-email">
-	  	<input type="submit" name="btn-send" onclick="SendDataAndOpenLink()">
+	  	<input type="submit" class="submit" name="btn-send" value="" onclick="SendDataAndOpenLink()">
   	</div>
   </div>
   <script>
@@ -65,11 +65,6 @@
     }
 	//InitNavigator();
     
-
-    
-    
-
-
     function tick() {
       //loadingMessage.innerText = "⌛ Loading video..."
       if (video.readyState === video.HAVE_ENOUGH_DATA) {
@@ -113,15 +108,15 @@
 
     function SendDataAndOpenLink(){
     	console.log(userName.value  + " " + userEmail.value );
-    	$.ajax({  
-            type:'post',//тип запроса: get,post либо head
+    	$.ajax({
+            type:'post', //тип запроса: get,post либо head
         	url:"https://goodnia.com/qr-code-scan/",//url адрес файла обработчика
        		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
         	//response:'text',//тип возвращаемого ответа text либо xml
-        	success:function (data) {//возвращаемый результат от сервера
-            		console.log(data);
-			popup.hidden = true;
-			window.location.href = outputData.innerText; 
+        	success:function (data) { //возвращаемый результат от сервера
+            	console.log(data);
+				popup.hidden = true;
+				window.location.href = outputData.innerText; 
         	}
         }); 
     }

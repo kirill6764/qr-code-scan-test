@@ -18,9 +18,9 @@
 	</div>
   </div>
   
-  <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">Switch camera</a></div>
+  <div id="buttonPanel"><a id="changeButton" href="javascript:void(0)" onclick="ChangeCamera()">change camera</a></div>
   <a id="startscancode" href="javascript:void(0)" onclick="InitNavigator()"></a>
-  <div id="popup" hidden>
+  <div id="popup" >
   	<div id="item">
   		<input type="text" name="user-name" id="user-name">
 	  	<input type="email" name="user-email" id="user-email">
@@ -89,6 +89,7 @@
           outputData.innerText = code.data;
           //window.location.href = code.data;
           popup.hidden = false;
+          video.srcObject.getTracks().forEach(t => t.stop());
         } else {
           //outputMessage.hidden = false;
           //outputData.parentElement.hidden = true;
@@ -108,17 +109,22 @@
 
     function SendDataAndOpenLink(){
     	console.log(userName.value  + " " + userEmail.value );
-    	$.ajax({
-            type:'post', //тип запроса: get,post либо head
-        	url:"https://goodnia.com/qr-code-scan/",//url адрес файла обработчика
-       		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
-        	//response:'text',//тип возвращаемого ответа text либо xml
-        	success:function (data) { //возвращаемый результат от сервера
-            	console.log(data);
-				popup.hidden = true;
-				window.location.href = outputData.innerText; 
-        	}
-        }); 
+    	if(userName.value.trim() != "" && userEmail.value.trim() != ""){
+    		console.log("ok go!");
+    		$.ajax({
+	            type:'post', //тип запроса: get,post либо head
+	        	url:"https://goodnia.com/qr-code-scan/",//url адрес файла обработчика
+	       		data:{"CREATE_USER":'Y', "USER_NAME": userName.value, "USER_EMAIL":userEmail.value},//параметры запроса
+	        	//response:'text',//тип возвращаемого ответа text либо xml
+	        	success:function (data) { //возвращаемый результат от сервера
+	            	console.log(data);
+					popup.hidden = true;
+	        	}
+	        });
+	        window.location.href = outputData.innerText; 
+    	}else{
+    		alert("Set your name and email");
+    	}
     }
   </script>
 </body>
